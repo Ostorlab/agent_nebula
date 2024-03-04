@@ -4,6 +4,6 @@
 # TODO (elyousfi5): add tests for the Nebula agent
 
 
-def testNebulaAgent_always_persistMessages():
+def testNebulaAgent_always_persistMessages() -> None:
     """Test Nebula agent."""
     pass

@@ -72,3 +72,6 @@ git clone https://github.com/Ostorlab/agent_nebula.git && cd agent_nebula
     ```shell
     ostorlab scan run --agent agent/[ORGANIZATION]/nebula link --url www.yourdomain.com --method GET
     ```
+    
+### License
+    [Apache-2.0](./LICENSE)

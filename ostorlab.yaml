@@ -1,6 +1,7 @@
 kind: Agent
 name: nebula
 version: 0.0.1
+image: images/logo.png
 description: |
   _The Nebula Agent is responsible for persisting all types of messages locally._
 
@@ -61,18 +62,20 @@ description: |
       ```shell
       ostorlab scan run --agent agent/[ORGANIZATION]/nebula link --url www.yourdomain.com --method GET
       ```
-in_selectors:
-  - v3.asset.ip.v4
-  - v3.asset.ip.v6
-  - v3.asset.domain_name
-  - v3.asset.link
+  ### License
+    [Apache-2.0](./LICENSE)
+
+license: Apache-2.0
+source: https://github.com/Ostorlab/agent_nebula
+in_selectors: []
 out_selectors: []
 docker_file_path : Dockerfile
 docker_build_root : .
+mounts:
+  - '$CONFIG_HOME/:/root/.ostorlab/'
 args:
   - name: "file_type"
     type: "string"
     description: "The type of the file where the message will be persisted."
-  - name: "file_path"
-    type: "string"
-    description: "The path of the file where the message will be persisted."
+    value: "json"
+

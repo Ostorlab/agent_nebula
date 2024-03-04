@@ -1,4 +1,5 @@
 """Nebula agent: responsible for persisting all types of messages."""
+
 import logging
 
 from ostorlab.agent import agent, definitions as agent_definitions
@@ -20,9 +21,9 @@ class NebulaAgent(agent.Agent):
     """Agent responsible for persisting all types of messages to file type specified in the agent definition."""
 
     def __init__(
-            self,
-            agent_definition: agent_definitions.AgentDefinition,
-            agent_settings: runtime_definitions.AgentSettings,
+        self,
+        agent_definition: agent_definitions.AgentDefinition,
+        agent_settings: runtime_definitions.AgentSettings,
     ) -> None:
         super().__init__(agent_definition, agent_settings)
         self._file_type = self.args.get("file_type")
@@ -36,7 +37,11 @@ class NebulaAgent(agent.Agent):
         """
         logger.info("processing message of selector : %s", message.selector)
         # TODO (elyousfi5): add the logic to persist the message to the file type and location specified in the agent
-        logger.info("message persisted to file type: %s at location: %s", self._file_type, self._file_location)
+        logger.info(
+            "message persisted to file type: %s at location: %s",
+            self._file_type,
+            self._file_path,
+        )
 
 
 if __name__ == "__main__":

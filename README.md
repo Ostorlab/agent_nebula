@@ -66,7 +66,7 @@ git clone https://github.com/Ostorlab/agent_nebula.git && cd agent_nebula
  4. Run the agent using on of the following commands:
 	 * If you did not specify an organization when building the image:
     ```shell
-    ostorlab scan run --agent agent//nebula ip 8.8.8.8
+    ostorlab scan run --agent agent//nebula link --url www.yourdomain.com --method GET
     ```
 	 * If you specified an organization when building the image:
     ```shell

@@ -3,3 +3,5 @@ ruff
 mypy
 typing-extensions
 pytest-mock
+freezegun
+pyfakefs

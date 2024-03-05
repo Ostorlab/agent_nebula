@@ -49,8 +49,7 @@ class NebulaAgent(agent.Agent):
         self._output_folder = (
             f"/output/messages_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
         )
-        if os.path.exists(self._output_folder) is False:
-            os.makedirs(self._output_folder)
+        os.makedirs(self._output_folder, exist_ok=True)
 
     def process(self, message: m.Message) -> None:
         """Process the message and persist it to the file type and location specified in the agent definition.

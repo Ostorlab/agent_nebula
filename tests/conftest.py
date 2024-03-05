@@ -1,6 +1,7 @@
 """Pytest fixtures for Agent Nebula."""
 
 import pathlib
+import random
 
 import pytest
 from ostorlab.agent import definitions as agent_definitions
@@ -22,7 +23,7 @@ def agent_settings() -> runtime_definitions.AgentSettings:
         key="agent/ostorlab/nebula",
         bus_url="NA",
         bus_exchange_topic="NA",
-        healthcheck_port=5301,
+        healthcheck_port=random.randint(5000, 6000),
         redis_url="redis://guest:guest@localhost:6379",
     )
 

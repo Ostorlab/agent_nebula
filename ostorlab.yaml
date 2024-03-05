@@ -67,12 +67,13 @@ description: |
 
 license: Apache-2.0
 source: https://github.com/Ostorlab/agent_nebula
-in_selectors: []
+in_selectors:
+  - v3
 out_selectors: []
 docker_file_path : Dockerfile
 docker_build_root : .
 mounts:
-  - '$CONFIG_HOME/:/root/.ostorlab/'
+  - '$CONFIG_HOME/:/output/'
 args:
   - name: "file_type"
     type: "string"

@@ -31,11 +31,6 @@ def fixture_agent(
                     type="string",
                     value=json.dumps("json").encode(),
                 ),
-                utils_definitions.Arg(
-                    name="file_path",
-                    type="string",
-                    value=json.dumps("output.json").encode(),
-                ),
             ],
             healthcheck_port=5301,
             redis_url="redis://guest:guest@localhost:6379",

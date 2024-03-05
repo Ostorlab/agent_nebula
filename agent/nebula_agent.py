@@ -1,7 +1,9 @@
 """Nebula agent: responsible for persisting all types of messages."""
 
+import base64
 import json
 import logging
+import os
 from datetime import datetime
 from typing import Any
 
@@ -19,14 +21,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-CONFIG_HOME = "/root/.ostorlab"
+SUPPORTED_FILE_TYPES = ["json"]
 
 
 class CustomEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         if isinstance(obj, bytes) is True:
-            return obj.decode("utf-8")
-
+            return base64.b64encode(obj).decode("utf-8")
         return json.JSONEncoder.default(self, obj)
 
 
@@ -40,6 +41,16 @@ class NebulaAgent(agent.Agent):
     ) -> None:
         super().__init__(agent_definition, agent_settings)
         self._file_type = self.args.get("file_type", "json")
+        if self._file_type.lower() not in SUPPORTED_FILE_TYPES:
+            raise ValueError(
+                f"File type {self._file_type} is not supported. Supported file types are {SUPPORTED_FILE_TYPES}"
+            )
+
+        self._output_folder = (
+            f"/output/messages_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        )
+        if os.path.exists(self._output_folder) is False:
+            os.makedirs(self._output_folder)
 
     def process(self, message: m.Message) -> None:
         """Process the message and persist it to the file type and location specified in the agent definition.
@@ -48,27 +59,22 @@ class NebulaAgent(agent.Agent):
             message: The message to process.
         """
         logger.info("Processing message of selector : %s", message.selector)
-        message_data: dict[str, Any] | None = message.data
-        if message_data is None:
-            logger.warning("Message data is empty")
-            return None
 
         if self._file_type == "json":
-            self._persist_to_json(message_data)
+            self._persist_to_json(message)
 
-    def _persist_to_json(self, message_data: dict[str, Any]) -> None:
-        """Persist the message data to a JSON file.
+    def _persist_to_json(self, message_to_persist: m.Message) -> None:
+        """Persist message to JSON file.
 
         Args:
-            message_data: The message data to persist.
+            message_to_persist: The message to persist.
         """
-        with open(
-            f"{CONFIG_HOME}/messages_{datetime.now().strftime('%Y-%m-%d_%H-%M')}.json",
-            "a",
-        ) as file:
-            file.write(json.dumps(message_data, cls=CustomEncoder) + "\n")
+        data = message_to_persist.data
+        selector = message_to_persist.selector
+        file_name = f"{self._output_folder}/{selector}_messages.json"
 
-        logger.info("Message persisted")
+        with open(file_name, "a") as file:
+            file.write(json.dumps(data, cls=CustomEncoder) + "\n")
 
 
 if __name__ == "__main__":

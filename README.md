@@ -18,32 +18,32 @@ _The Nebula Agent is responsible for persisting all types of messages locally._
 ## Getting Started
 To perform your first scan, simply run the following command:
 ```shell
-ostorlab scan run --install --agent agent/ostorlab/nebula link --url www.yourdomain.com --method GET
+oxo scan run --install --agent agent/ostorlab/nebula link --url www.yourdomain.com --method GET
 ``` 
 
 This command will download and install `agent/ostorlab/nebula` and target `www.yourdomain.com` with the `GET` method.
-For more information, please refer to the [Ostorlab Documentation](https://github.com/Ostorlab/ostorlab/blob/main/README.md)
+For more information, please refer to the [OXO Documentation](https://oxo.ostorlab.co/docs)
 
 
 ## Usage
 
-Agent Nebula can be installed directly from the ostorlab agent store or built from this repository.
+Agent Nebula can be installed directly from the oxo agent store or built from this repository.
 
- ### Install directly from ostorlab agent store
+ ### Install directly from oxo agent store
 
  ```shell
- ostorlab agent install agent/ostorlab/nebula
+ oxo agent install agent/ostorlab/nebula
  ```
 
 You can then run the agent with the following command:
 ```shell
-ostorlab scan run --agent agent/ostorlab/nebula link --url www.yourdomain.com --method GET
+oxo scan run --agent agent/ostorlab/nebula link --url www.yourdomain.com --method GET
 ```
 
 
 ### Build directly from the repository
 
- 1. To build nebula agent you need to have [ostorlab](https://pypi.org/project/ostorlab/) installed in your machine. If you have already installed ostorlab, you can skip this step.
+ 1. To build nebula agent you need to have [oxo](https://pypi.org/project/ostorlab/) installed in your machine. If you have already installed oxo, you can skip this step.
 
 ```shell
 pip3 install ostorlab
@@ -58,7 +58,7 @@ git clone https://github.com/Ostorlab/agent_nebula.git && cd agent_nebula
  3. Build the agent image using ostorlab cli.
 
  ```shell
- ostorlab agent build --file=ostorlab.yaml
+ oxo agent build --file=ostorlab.yaml
  ```
 
  You can pass the optional flag `--organization` to specify your organisation. The organization is empty by default.
@@ -66,11 +66,11 @@ git clone https://github.com/Ostorlab/agent_nebula.git && cd agent_nebula
  4. Run the agent using on of the following commands:
 	 * If you did not specify an organization when building the image:
     ```shell
-    ostorlab scan run --agent agent//nebula link --url www.yourdomain.com --method GET
+    oxo scan run --agent agent//nebula link --url www.yourdomain.com --method GET
     ```
 	 * If you specified an organization when building the image:
     ```shell
-    ostorlab scan run --agent agent/[ORGANIZATION]/nebula link --url www.yourdomain.com --method GET
+    oxo scan run --agent agent/[ORGANIZATION]/nebula link --url www.yourdomain.com --method GET
     ```
     
 ### License

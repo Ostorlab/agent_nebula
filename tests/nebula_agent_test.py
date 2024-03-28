@@ -5,7 +5,6 @@ import os
 import pathlib
 
 import pytest
-from freezegun import freeze_time
 from ostorlab.agent import definitions as agent_definitions
 from ostorlab.agent.message import message as msg
 from ostorlab.runtimes import definitions as runtime_definitions
@@ -13,7 +12,6 @@ from ostorlab.utils import defintions as utils_definitions
 from pyfakefs import fake_filesystem_unittest
 
 from agent import nebula_agent
-import os
 
 
 def testAgentNebula_whenUnsupportedFileType_raisesValueError() -> None:
@@ -39,9 +37,9 @@ def testAgentNebula_whenUnsupportedFileType_raisesValueError() -> None:
 
 
 def testAgentNebula_whenFileTypeIsJson_persistMessage(
-    agent_definition: agent_definitions.AgentDefinition,
-    agent_settings: runtime_definitions.AgentSettings,
-    link_message: msg.Message,
+        agent_definition: agent_definitions.AgentDefinition,
+        agent_settings: runtime_definitions.AgentSettings,
+        link_message: msg.Message,
 ) -> None:
     """Test that NebulaAgent persists message to json file."""
     os.environ["UNIVERSE"] = "43"
@@ -63,9 +61,9 @@ def testAgentNebula_whenFileTypeIsJson_persistMessage(
 
 
 def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
-    agent_definition: agent_definitions.AgentDefinition,
-    agent_settings: runtime_definitions.AgentSettings,
-    multiple_link_messages: list[msg.Message],
+        agent_definition: agent_definitions.AgentDefinition,
+        agent_settings: runtime_definitions.AgentSettings,
+        multiple_link_messages: list[msg.Message],
 ) -> None:
     """Test that NebulaAgent persists multiple link messages to json file."""
     os.environ["UNIVERSE"] = "43"
@@ -93,9 +91,9 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
 
 
 def testAgentNebula_whenFileTypeIsJson_persistMultipleMessages(
-    agent_definition: agent_definitions.AgentDefinition,
-    agent_settings: runtime_definitions.AgentSettings,
-    multiple_messages: list[msg.Message],
+        agent_definition: agent_definitions.AgentDefinition,
+        agent_settings: runtime_definitions.AgentSettings,
+        multiple_messages: list[msg.Message],
 ) -> None:
     """Test that NebulaAgent persists multiple messages of different types to json files."""
     os.environ["UNIVERSE"] = "43"

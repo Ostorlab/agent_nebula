@@ -34,9 +34,9 @@ class NebulaAgent(agent.Agent):
     """Agent responsible for persisting all types of messages to file type specified in the agent definition."""
 
     def __init__(
-            self,
-            agent_definition: agent_definitions.AgentDefinition,
-            agent_settings: runtime_definitions.AgentSettings,
+        self,
+        agent_definition: agent_definitions.AgentDefinition,
+        agent_settings: runtime_definitions.AgentSettings,
     ) -> None:
         super().__init__(agent_definition, agent_settings)
         self._file_type = self.args.get("file_type", "json")

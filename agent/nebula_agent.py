@@ -47,7 +47,7 @@ class NebulaAgent(agent.Agent):
             )
 
         self._output_folder = (
-            f"/output/messages_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+            f"/output/scan_{self.universe}_messages"
         )
         os.makedirs(self._output_folder, exist_ok=True)
 

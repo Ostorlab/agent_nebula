@@ -15,6 +15,7 @@ from pyfakefs import fake_filesystem_unittest
 from agent import nebula_agent
 import os
 
+
 def testAgentNebula_whenUnsupportedFileType_raisesValueError() -> None:
     """Test that NebulaAgent raises ValueError when file type is not supported."""
     with pytest.raises(ValueError):
@@ -55,9 +56,7 @@ def testAgentNebula_whenFileTypeIsJson_persistMessage(
 
         assert os.path.exists("/output/scan_43_messages")
         assert len(os.listdir("/output/scan_43_messages")) == 1
-        with open(
-            "/output/scan_43_messages/v3.asset.link_messages.json"
-        ) as file:
+        with open("/output/scan_43_messages/v3.asset.link_messages.json") as file:
             assert sorted(json.load(file).items()) == sorted(
                 json.loads(expected_output).items()
             )

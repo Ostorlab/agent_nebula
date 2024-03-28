@@ -46,9 +46,7 @@ class NebulaAgent(agent.Agent):
                 f"File type {self._file_type} is not supported. Supported file types are {SUPPORTED_FILE_TYPES}"
             )
 
-        self._output_folder = (
-            f"/output/scan_{self.universe}_messages"
-        )
+        self._output_folder = f"/output/scan_{self.universe}_messages"
         os.makedirs(self._output_folder, exist_ok=True)
 
     def process(self, message: m.Message) -> None:

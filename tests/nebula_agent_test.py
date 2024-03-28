@@ -5,7 +5,6 @@ import os
 import pathlib
 
 import pytest
-from freezegun import freeze_time
 from ostorlab.agent import definitions as agent_definitions
 from ostorlab.agent.message import message as msg
 from ostorlab.runtimes import definitions as runtime_definitions
@@ -37,13 +36,13 @@ def testAgentNebula_whenUnsupportedFileType_raisesValueError() -> None:
             nebula_agent.NebulaAgent(definition, settings)
 
 
-@freeze_time("2024-03-05 12:00:00")
 def testAgentNebula_whenFileTypeIsJson_persistMessage(
     agent_definition: agent_definitions.AgentDefinition,
     agent_settings: runtime_definitions.AgentSettings,
     link_message: msg.Message,
 ) -> None:
     """Test that NebulaAgent persists message to json file."""
+    os.environ["UNIVERSE"] = "43"
     with fake_filesystem_unittest.Patcher():
         expected_output = json.dumps(
             {"url": "https://ostorlab.co", "method": b"GET"},
@@ -53,23 +52,21 @@ def testAgentNebula_whenFileTypeIsJson_persistMessage(
 
         nebula_test_agent.process(link_message)
 
-        assert os.path.exists("/output/messages_2024-03-05_12-00-00")
-        assert len(os.listdir("/output/messages_2024-03-05_12-00-00")) == 1
-        with open(
-            "/output/messages_2024-03-05_12-00-00/v3.asset.link_messages.json"
-        ) as file:
+        assert os.path.exists("/output/scan_43_messages")
+        assert len(os.listdir("/output/scan_43_messages")) == 1
+        with open("/output/scan_43_messages/v3.asset.link_messages.json") as file:
             assert sorted(json.load(file).items()) == sorted(
                 json.loads(expected_output).items()
             )
 
 
-@freeze_time("2023-03-05 12:00:00")
 def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
     agent_definition: agent_definitions.AgentDefinition,
     agent_settings: runtime_definitions.AgentSettings,
     multiple_link_messages: list[msg.Message],
 ) -> None:
     """Test that NebulaAgent persists multiple link messages to json file."""
+    os.environ["UNIVERSE"] = "43"
     with fake_filesystem_unittest.Patcher():
         expected_output = [
             json.dumps(
@@ -83,7 +80,7 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
         for message in multiple_link_messages:
             nebula_test_agent.process(message)
 
-        file_path = "/output/messages_2023-03-05_12-00-00"
+        file_path = "/output/scan_43_messages"
         assert os.path.exists(file_path)
         assert len(os.listdir(file_path)) == 1
         with open(f"{file_path}/v3.asset.link_messages.json", "r") as file:
@@ -93,13 +90,13 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
             assert line.strip() == expected_line.strip()
 
 
-@freeze_time("2023-03-05 12:00:00")
 def testAgentNebula_whenFileTypeIsJson_persistMultipleMessages(
     agent_definition: agent_definitions.AgentDefinition,
     agent_settings: runtime_definitions.AgentSettings,
     multiple_messages: list[msg.Message],
 ) -> None:
     """Test that NebulaAgent persists multiple messages of different types to json files."""
+    os.environ["UNIVERSE"] = "43"
     with fake_filesystem_unittest.Patcher():
         expected_output = [
             json.dumps(
@@ -117,7 +114,7 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleMessages(
         for message in multiple_messages:
             nebula_test_agent.process(message)
 
-        file_path = "/output/messages_2023-03-05_12-00-00"
+        file_path = "/output/scan_43_messages"
         assert os.path.exists(file_path)
         assert len(os.listdir(file_path)) == 3
         assert os.path.exists(f"{file_path}/v3.asset.link_messages.json") is True

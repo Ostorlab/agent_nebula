@@ -4,7 +4,6 @@ import base64
 import json
 import logging
 import os
-from datetime import datetime
 from typing import Any
 
 from ostorlab.agent import agent, definitions as agent_definitions
@@ -46,9 +45,7 @@ class NebulaAgent(agent.Agent):
                 f"File type {self._file_type} is not supported. Supported file types are {SUPPORTED_FILE_TYPES}"
             )
 
-        self._output_folder = (
-            f"/output/messages_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
-        )
+        self._output_folder = f"/output/scan_{self.universe}_messages"
         os.makedirs(self._output_folder, exist_ok=True)
 
     def process(self, message: m.Message) -> None:

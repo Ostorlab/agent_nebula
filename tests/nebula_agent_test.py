@@ -8,7 +8,7 @@ import pytest
 from ostorlab.agent import definitions as agent_definitions
 from ostorlab.agent.message import message as msg
 from ostorlab.runtimes import definitions as runtime_definitions
-from ostorlab.utils import defintions as utils_definitions
+from ostorlab.utils import definitions as utils_definitions
 from pyfakefs import fake_filesystem_unittest
 
 from agent import nebula_agent

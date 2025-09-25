@@ -1,6 +1,5 @@
 """Pytest fixtures for Agent Nebula."""
 
-import json
 import pathlib
 import random
 from typing import Any
@@ -40,7 +39,7 @@ def agent_settings_with_messages_dir() -> runtime_definitions.AgentSettings:
             utils_definitions.Arg(
                 name="messages_dirname",
                 type="string",
-                value=json.dumps("test_dir").encode(),
+                value=b'"test_dir"',
             )
         ],
         bus_url="NA",

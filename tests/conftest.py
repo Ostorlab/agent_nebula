@@ -1,12 +1,15 @@
 """Pytest fixtures for Agent Nebula."""
 
+import json
 import pathlib
 import random
+from typing import Any
 
 import pytest
 from ostorlab.agent import definitions as agent_definitions
 from ostorlab.agent.message import message as msg
 from ostorlab.runtimes import definitions as runtime_definitions
+from ostorlab.utils import definitions as utils_definitions
 
 
 @pytest.fixture(scope="function", name="agent_definition")
@@ -21,6 +24,25 @@ def agent_settings() -> runtime_definitions.AgentSettings:
     """NebulaAgent settings fixture for testing purposes."""
     return runtime_definitions.AgentSettings(
         key="agent/ostorlab/nebula",
+        bus_url="NA",
+        bus_exchange_topic="NA",
+        healthcheck_port=random.randint(5000, 6000),
+        redis_url="redis://guest:guest@localhost:6379",
+    )
+
+
+@pytest.fixture(scope="function")
+def agent_settings_with_messages_dir() -> runtime_definitions.AgentSettings:
+    """NebulaAgent settings fixture for testing purposes."""
+    return runtime_definitions.AgentSettings(
+        key="agent/ostorlab/nebula",
+        args=[
+            utils_definitions.Arg(
+                name="messages_dirname",
+                type="string",
+                value=json.dumps("test_dir").encode(),
+            )
+        ],
         bus_url="NA",
         bus_exchange_topic="NA",
         healthcheck_port=random.randint(5000, 6000),
@@ -61,3 +83,11 @@ def multiple_messages() -> list[msg.Message]:
             "v3.asset.ip", data={"host": "192.168.1.1", "mask": "24"}
         ),
     ]
+
+
+@pytest.fixture(autouse=True)
+def disable_healthcheck(monkeypatch: Any) -> None:
+    monkeypatch.setattr(
+        "ostorlab.agent.mixins.agent_healthcheck_mixin.HealthcheckWebThread.__init__",
+        lambda *args, **kwargs: None,
+    )

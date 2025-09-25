@@ -132,3 +132,27 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleMessages(
             lines = file.readlines()
         assert len(lines) == 1
         assert lines[0].strip() == expected_output[2].strip()
+
+
+def testAgentNebula_whenMessagesDirnameIsSpecified_persistInMessagesDir(
+    agent_definition: agent_definitions.AgentDefinition,
+    agent_settings_with_messages_dir: runtime_definitions.AgentSettings,
+    link_message: msg.Message,
+) -> None:
+    with fake_filesystem_unittest.Patcher():
+        expected_output = json.dumps(
+            {"url": "https://ostorlab.co", "method": b"GET"},
+            cls=nebula_agent.CustomEncoder,
+        )
+        nebula_test_agent = nebula_agent.NebulaAgent(
+            agent_definition, agent_settings_with_messages_dir
+        )
+
+        nebula_test_agent.process(link_message)
+
+        assert os.path.exists("/output/test_dir")
+        assert len(os.listdir("/output/test_dir")) == 1
+        with open("/output/test_dir/v3.asset.link_messages.json") as file:
+            assert sorted(json.load(file).items()) == sorted(
+                json.loads(expected_output).items()
+            )

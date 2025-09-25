@@ -37,7 +37,7 @@ def agent_settings_with_messages_dir() -> runtime_definitions.AgentSettings:
         key="agent/ostorlab/nebula",
         args=[
             utils_definitions.Arg(
-                name="messages_dirname",
+                name="output_directory",
                 type="string",
                 value=b'"test_dir"',
             )

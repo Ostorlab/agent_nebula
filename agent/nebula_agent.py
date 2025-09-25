@@ -44,13 +44,13 @@ class NebulaAgent(agent.Agent):
             raise ValueError(
                 f"File type {self._file_type} is not supported. Supported file types are {SUPPORTED_FILE_TYPES}"
             )
-
-        messages_dirname = self.args.get("messages_dirname")
-        if messages_dirname is not None:
-            self._output_folder = f"/output/{messages_dirname}"
+        self._output_directory: str
+        output_directory: str | None = self.args.get("output_directory")
+        if output_directory is not None:
+            self._output_directory = f"/output/{output_directory}"
         else:
-            self._output_folder = f"/output/scan_{self.universe}_messages"
-        os.makedirs(self._output_folder, exist_ok=True)
+            self._output_directory = f"/output/scan_{self.universe}_messages"
+        os.makedirs(self._output_directory, exist_ok=True)
 
     def process(self, message: m.Message) -> None:
         """Process the message and persist it to the file type and location specified in the agent definition.
@@ -71,7 +71,7 @@ class NebulaAgent(agent.Agent):
         """
         data = message_to_persist.data
         selector = message_to_persist.selector
-        file_name = f"{self._output_folder}/{selector}_messages.json"
+        file_name = f"{self._output_directory}/{selector}_messages.json"
 
         with open(file_name, "a") as file:
             file.write(json.dumps(data, cls=CustomEncoder) + "\n")

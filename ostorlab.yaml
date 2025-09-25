@@ -79,4 +79,7 @@ args:
     type: "string"
     description: "The type of the file where the message will be persisted."
     value: "json"
+  - name: "output_directory"
+    type: "string"
+    description: "[Optional] The directory name where to store the scan messages. This is not a path, but a directory name that will be created inside the /output directory."
 

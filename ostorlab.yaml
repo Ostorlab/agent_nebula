@@ -81,5 +81,5 @@ args:
     value: "json"
   - name: "output_directory"
     type: "string"
-    description: "[Optional] The directory name where to store the scan messages."
+    description: "[Optional] The directory name where to store the scan messages. This is not a path, but a directory name that will be created inside the /output directory."
 

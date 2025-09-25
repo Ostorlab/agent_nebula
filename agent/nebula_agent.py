@@ -4,6 +4,7 @@ import base64
 import json
 import logging
 import os
+import pathlib
 from typing import Any
 
 from ostorlab.agent import agent, definitions as agent_definitions
@@ -44,13 +45,17 @@ class NebulaAgent(agent.Agent):
             raise ValueError(
                 f"File type {self._file_type} is not supported. Supported file types are {SUPPORTED_FILE_TYPES}"
             )
-        self._output_directory: str
+        self._output_directory: pathlib.Path
         output_directory: str | None = self.args.get("output_directory")
         if output_directory is not None:
-            self._output_directory = f"/output/{output_directory}"
+            self._output_directory = pathlib.Path("/output") / os.path.basename(
+                output_directory
+            )
         else:
-            self._output_directory = f"/output/scan_{self.universe}_messages"
-        os.makedirs(self._output_directory, exist_ok=True)
+            self._output_directory = (
+                pathlib.Path("/output") / f"scan_{self.universe}_messages"
+            )
+        self._output_directory.mkdir(parents=True, exist_ok=True)
 
     def process(self, message: m.Message) -> None:
         """Process the message and persist it to the file type and location specified in the agent definition.
@@ -71,9 +76,9 @@ class NebulaAgent(agent.Agent):
         """
         data = message_to_persist.data
         selector = message_to_persist.selector
-        file_name = f"{self._output_directory}/{selector}_messages.json"
+        file_path = self._output_directory / f"{selector}_messages.json"
 
-        with open(file_name, "a") as file:
+        with open(file_path, "a") as file:
             file.write(json.dumps(data, cls=CustomEncoder) + "\n")
 
 

@@ -1,6 +1,6 @@
 kind: Agent
 name: nebula
-version: 0.2.1
+version: 0.2.2
 image: images/logo.png
 description: |
   _The Nebula Agent is responsible for persisting all types of messages locally._

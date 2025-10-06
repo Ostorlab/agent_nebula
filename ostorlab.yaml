@@ -77,7 +77,7 @@ mounts:
 args:
   - name: "file_type"
     type: "string"
-    description: "The type of the file where the message will be persisted."
+    description: "The type of the file where the message will be persisted. The supported types are: json, ubjson."
     value: "json"
   - name: "output_directory"
     type: "string"

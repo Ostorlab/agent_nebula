@@ -54,10 +54,10 @@ def testAgentNebula_whenFileTypeIsJson_persistMessage(
         nebula_test_agent.process(link_message)
 
         scan_dir = "/output/scan_43_messages"
-        assert os.path.exists(scan_dir)
+        assert os.path.exists(scan_dir) is True
         assert len(os.listdir(scan_dir)) == 1
         message_dir = f"{scan_dir}/v3.asset.link_messages"
-        assert os.path.exists(message_dir)
+        assert os.path.exists(message_dir) is True
         assert len(os.listdir(message_dir)) == 1
         with open(f"{message_dir}/0.json") as file:
             assert sorted(json.load(file).items()) == sorted(
@@ -86,10 +86,10 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleLinkMessages(
             nebula_test_agent.process(message)
 
         scan_dir = "/output/scan_43_messages"
-        assert os.path.exists(scan_dir)
+        assert os.path.exists(scan_dir) is True
         assert len(os.listdir(scan_dir)) == 1
         message_dir = f"{scan_dir}/v3.asset.link_messages"
-        assert os.path.exists(message_dir)
+        assert os.path.exists(message_dir) is True
         files = sorted(os.listdir(message_dir))
         assert len(files) == len(expected_output)
         for i, expected in enumerate(expected_output):
@@ -125,10 +125,10 @@ def testAgentNebula_whenFileTypeIsUbjson_persistMessage(
         nebula_test_agent.process(link_message)
 
         scan_dir = "/output/scan_43_messages"
-        assert os.path.exists(scan_dir)
+        assert os.path.exists(scan_dir) is True
         assert len(os.listdir(scan_dir)) == 1
         message_dir = f"{scan_dir}/v3.asset.link_messages"
-        assert os.path.exists(message_dir)
+        assert os.path.exists(message_dir) is True
         assert len(os.listdir(message_dir)) == 1
         with open(f"{message_dir}/0.ubjson", "rb") as file:
             assert ubjson.load(file) == expected_output
@@ -159,7 +159,7 @@ def testAgentNebula_whenFileTypeIsJson_persistMultipleMessages(
             nebula_test_agent.process(message)
 
         scan_dir = "/output/scan_43_messages"
-        assert os.path.exists(scan_dir)
+        assert os.path.exists(scan_dir) is True
         assert len(os.listdir(scan_dir)) == 3
 
         link_dir = f"{scan_dir}/v3.asset.link_messages"
@@ -198,10 +198,10 @@ def testAgentNebula_whenMessagesDirnameIsSpecified_persistInMessagesDir(
         nebula_test_agent.process(link_message)
 
         output_dir = "/output/test_dir"
-        assert os.path.exists(output_dir)
+        assert os.path.exists(output_dir) is True
         assert len(os.listdir(output_dir)) == 1
         message_dir = f"{output_dir}/v3.asset.link_messages"
-        assert os.path.exists(message_dir)
+        assert os.path.exists(message_dir) is True
         assert len(os.listdir(message_dir)) == 1
         with open(f"{message_dir}/0.json") as file:
             assert sorted(json.load(file).items()) == sorted(

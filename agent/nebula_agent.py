@@ -30,13 +30,26 @@ class CustomEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def _write_json(data: Any, path: pathlib.Path) -> None:
+class Utf8Encoder(json.JSONEncoder):
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, bytes) is True:
+            try:
+                return obj.decode("utf-8")
+            except UnicodeDecodeError as e:
+                return f"<Decoding Error: {e}>"
+        return json.JSONEncoder.default(self, obj)
+
+
+def _write_json(data: Any, path: pathlib.Path, utf8: bool = False) -> None:
     """Write data to a JSON file."""
     with open(path, "w") as f:
         f.write(json.dumps(data, cls=CustomEncoder))
+        if utf8 is True:
+            f.write("\n")
+            f.write(json.dumps(data, cls=Utf8Encoder))
 
 
-def _write_ubjson(data: Any, path: pathlib.Path) -> None:
+def _write_ubjson(data: Any, path: pathlib.Path, utf8: bool = False) -> None:
     """Write data to a UBJSON file."""
     with open(path, "wb") as f:
         ubjson.dump(data, f)
@@ -58,12 +71,13 @@ class NebulaAgent(agent.Agent):
     ) -> None:
         super().__init__(agent_definition, agent_settings)
         self._file_type = self.args.get("file_type", "json")
+        self._utf8 = self.args.get("utf8", False)
         if self._file_type.lower() not in SUPPORTED_FILE_TYPES:
             raise ValueError(
                 f"File type {self._file_type} is not supported. Supported file types are {list(SUPPORTED_FILE_TYPES.keys())}"
             )
 
-        self._writer: Callable[[Any, pathlib.Path], None] = SUPPORTED_FILE_TYPES[
+        self._writer: Callable[[Any, pathlib.Path, bool], None] = SUPPORTED_FILE_TYPES[
             self._file_type
         ]
 
@@ -104,7 +118,7 @@ class NebulaAgent(agent.Agent):
         order = self._message_order.get(selector, 0)
         file_path = selector_dir / f"{order}.{self._file_type}"
 
-        self._writer(data, file_path)
+        self._writer(data, file_path, self._utf8)
 
         self._message_order[selector] = order + 1
 

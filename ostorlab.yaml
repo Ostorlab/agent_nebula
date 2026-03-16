@@ -70,10 +70,10 @@ source: https://github.com/Ostorlab/agent_nebula
 in_selectors:
   - v3
 out_selectors: []
-docker_file_path : Dockerfile
-docker_build_root : .
+docker_file_path: Dockerfile
+docker_build_root: .
 mounts:
-  - '$CONFIG_HOME/:/output/'
+  - "$CONFIG_HOME/:/output/"
 args:
   - name: "file_type"
     type: "string"
@@ -82,4 +82,7 @@ args:
   - name: "output_directory"
     type: "string"
     description: "[Optional] The directory name where to store the scan messages. This is not a path, but a directory name that will be created inside the /output directory."
-
+  - name: "utf8"
+    type: "boolean"
+    description: "[Optional] If True, attempt UTF-8 decoding for bytes (fallback to error message). If False, use base64 encoding for all bytes."
+    value: false

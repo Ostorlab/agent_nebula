@@ -207,3 +207,58 @@ def testAgentNebula_whenMessagesDirnameIsSpecified_persistInMessagesDir(
             assert sorted(json.load(file).items()) == sorted(
                 json.loads(expected_output).items()
             )
+
+def testAgentNebula_whenUtf8IsFalse_persistNormalJson(
+    agent_definition: agent_definitions.AgentDefinition,
+    link_message: msg.Message,
+) -> None:
+    os.environ["UNIVERSE"] = "43"
+    settings = runtime_definitions.AgentSettings(
+        key="agent/ostorlab/nebula",
+        bus_url="NA",
+        bus_exchange_topic="NA",
+        args=[
+            utils_definitions.Arg(
+                name="utf8",
+                type="boolean",
+                value=json.dumps(False).encode(),
+            ),
+        ],
+        healthcheck_port=5301,
+        redis_url="redis://guest:guest@localhost:6379",
+    )
+    with fake_filesystem_unittest.Patcher():
+        nebula_test_agent = nebula_agent.NebulaAgent(agent_definition, settings)
+        nebula_test_agent.process(link_message)
+        with open("/output/scan_43_messages/v3.asset.link_messages/0.json", "r") as file:
+            content = file.read()
+            assert "\n" not in content.strip()
+            assert '"method": "R0VU"' in content
+
+def testAgentNebula_whenUtf8IsTrue_persistBothJson(
+    agent_definition: agent_definitions.AgentDefinition,
+    link_message: msg.Message,
+) -> None:
+    os.environ["UNIVERSE"] = "43"
+    settings = runtime_definitions.AgentSettings(
+        key="agent/ostorlab/nebula",
+        bus_url="NA",
+        bus_exchange_topic="NA",
+        args=[
+            utils_definitions.Arg(
+                name="utf8",
+                type="boolean",
+                value=json.dumps(True).encode(),
+            ),
+        ],
+        healthcheck_port=5301,
+        redis_url="redis://guest:guest@localhost:6379",
+    )
+    with fake_filesystem_unittest.Patcher():
+        nebula_test_agent = nebula_agent.NebulaAgent(agent_definition, settings)
+        nebula_test_agent.process(link_message)
+        with open("/output/scan_43_messages/v3.asset.link_messages/0.json", "r") as file:
+            lines = file.read().strip().split("\n")
+            assert len(lines) == 2
+            assert '"method": "R0VU"' in lines[0]
+            assert '"method": "GET"' in lines[1]

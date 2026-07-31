@@ -65,7 +65,7 @@ def multiple_link_messages() -> list[msg.Message]:
         msg.Message.from_data(
             selector, data={"url": f"https://www.domain{i}.com", "method": b"GET"}
         )
-        for i in range(0, 5)
+        for i in range(5)
     ]
 
 

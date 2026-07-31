@@ -5,10 +5,12 @@ import json
 import logging
 import os
 import pathlib
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import ubjson
-from ostorlab.agent import agent, definitions as agent_definitions
+from ostorlab.agent import agent
+from ostorlab.agent import definitions as agent_definitions
 from ostorlab.agent.message import message as m
 from ostorlab.runtimes import definitions as runtime_definitions
 from rich import logging as rich_logging
